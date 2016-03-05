@@ -48,6 +48,15 @@ function listenForPrompts(coffeemateId) {
 
 	  		coffeeQueue = [];
 	  	}
+	  } else {
+	  	if(message.type === 'message' && 
+	  		(message.text.indexOf(coffeemateId) >= 0 || message.channel[0] == 'D')) {
+	  		rtm.sendMessage("I'm just a simple, creamy, matchmaking robot. To set up a virtual coffee, " + 
+	  				"direct message me and say `coffee me`, and I'll randomly match you with another " +
+	  				"18fer who has done the same thing. You can also post `coffee me` in any channel " +
+	  				"I am invited to.", 
+		  			message.channel);
+	  	}
 	  }
 
 	  if(message.type === 'message' && message.text.indexOf('coffee queue') >= 0) {
