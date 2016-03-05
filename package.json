@@ -1,0 +1,16 @@
+{
+  "name": "coffeemate",
+  "version": "1.0.0",
+  "description": "the creamiest matchmaking slackbot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Anthony Garvan",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "@slack/client": "^2.0.6",
+    "request": "^2.69.0"
+  }
+}
