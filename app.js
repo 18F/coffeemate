@@ -1,5 +1,6 @@
 var RtmClient = require('@slack/client').RtmClient;
 var request = require('request');
+var http = require('http');
 
 var token = process.env.SLACK_API_TOKEN || '';
 
@@ -77,4 +78,14 @@ function run() {
 	    }
 })}
 
+
+var port = process.env.PORT || 3000;
+
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Coffeemate is alive.\n');
+}).listen(port, function() {
+  run();
+  console.log('Server running.');
+});
 run();
