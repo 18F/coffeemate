@@ -3,8 +3,9 @@ var request = require('request');
 var http = require('http');
 
 var token = process.env.SLACK_API_TOKEN || '';
+var rtm = new RtmClient(token);
 
-function openGroupChat(coffeemateId, coffeeQueue, rtm) {
+function openGroupChat(coffeemateId, coffeeQueue) {
 	var users = coffeemateId + ',' + coffeeQueue[0] + ',' + coffeeQueue[1];
 	var options = {url: "https://slack.com/api/mpim.open",
 					qs: {token: token, users: users}};
@@ -19,7 +20,6 @@ function openGroupChat(coffeemateId, coffeeQueue, rtm) {
 
 var coffeeQueue = []
 function listenForPrompts(coffeemateId) {
-	var rtm = new RtmClient(token, {logLevel: 'debug'});
 	rtm.start();
 
 	var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
@@ -79,13 +79,10 @@ function run() {
 	    }
 })}
 
-
-var port = process.env.PORT || 3000;
-
 http.createServer(function(req, res) {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end('Coffeemate is alive.\n');
-}).listen(port, function() {
+}).listen(process.env.PORT || 3000, function() {
   run();
-  console.log('Server running.');
+  console.log('Coffeemate is running.');
 });

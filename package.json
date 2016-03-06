@@ -9,6 +9,7 @@
   },
   "author": "Anthony Garvan",
   "license": "CC0-1.0",
+  "repository": "https://github.com/18F/coffeemate",
   "dependencies": {
     "@slack/client": "^2.0.6",
     "request": "^2.69.0"
