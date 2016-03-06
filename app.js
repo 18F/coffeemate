@@ -25,7 +25,8 @@ function listenForPrompts(coffeemateId) {
 	var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 
 	rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-	  if(message.type === 'message' && message.text.toLowerCase().indexOf('coffee me') >= 0) {
+	  if(message.type === 'message' && message.text.toLowerCase().indexOf('coffee me') >= 0
+	  		&& message.user !== coffeemateId) {
 	  	coffeeQueue.push(message.user);
 	  	if(coffeeQueue.length === 1) {
 	  		rtm.sendMessage("<@" + message.user + ">: You're in line for coffee!" +
@@ -81,11 +82,10 @@ function run() {
 
 var port = process.env.PORT || 3000;
 
-http.createServer((req, res) => {
+http.createServer(function(req, res) {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end('Coffeemate is alive.\n');
 }).listen(port, function() {
   run();
   console.log('Server running.');
 });
-run();
