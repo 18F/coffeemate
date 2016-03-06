@@ -28,7 +28,7 @@ function listenForPrompts(coffeemateId) {
 	  	coffeeQueue.push(message.user);
 	  	if(coffeeQueue.length === 1) {
 	  		rtm.sendMessage("<@" + message.user + ">: You're in line for coffee!" +
-	  			" You'll be introduced once the next person signs up.", message.channel);	
+	  			" You'll be introduced to the next person who wants coffee.", message.channel);	
 	  	}
 
 	  	if(coffeeQueue.length === 2) {
@@ -40,8 +40,8 @@ function listenForPrompts(coffeemateId) {
 		  		openGroupChat(coffeemateId, coffeeQueue, rtm);	  			
 	  		} else {
 	  			rtm.sendMessage("<@" + message.user + ">: " + 
-	  				"You were just paired with yourself for coffee! You really don't need a " +
-	  				"bot's orchestration for this, you can just go get a cup. You are no longer " +
+	  				"You just paired with yourself for coffee! You really don't need a " +
+	  				"bot to orchestrate this, you can just go get a cup. You are no longer " +
 	  				"in line to get coffee.", 
 		  			message.channel);
 	  		}
@@ -52,7 +52,7 @@ function listenForPrompts(coffeemateId) {
 	  	if(message.type === 'message' && 
 	  		(message.text.indexOf(coffeemateId) >= 0 || message.channel[0] == 'D')) {
 	  		rtm.sendMessage("I'm just a simple, creamy, matchmaking robot. To set up a virtual coffee, " + 
-	  				"direct message me and say `coffee me`, and I'll randomly match you with another " +
+	  				"direct message me and say `coffee me`, and I'll match you with another " +
 	  				"18fer who has done the same thing. You can also post `coffee me` in any channel " +
 	  				"I am invited to.", 
 		  			message.channel);
