@@ -1,8 +1,8 @@
 # Coffeemate
 
-### The creamiest matchmaking slackbot
+### The creamiest virtual coffee matchmaking slackbot
 
-Coffeemate is a slackbot which helps team member get to know each other by setting them up on virtual coffees. The usage is simple:
+Coffeemate is a slackbot which helps team members get to know each other by setting them up on virtual coffees. The usage is simple:
 
 To sign up for a coffee session, direct message @coffeemate with:
 ```
