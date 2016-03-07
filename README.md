@@ -2,6 +2,8 @@
 
 ### The creamiest virtual coffee matchmaking slackbot
 
+[![Build Status](https://travis-ci.org/18F/coffeemate.svg?branch=master)](https://travis-ci.org/18F/coffeemate)
+
 Coffeemate is a slackbot which helps team members get to know each other by setting them up on virtual coffees. The usage is simple:
 
 To sign up for a coffee session, direct message @coffeemate with:
