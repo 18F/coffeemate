@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node node_modules/jasmine-node/bin/jasmine-node spec/botSpec.js",
     "start": "node app.js",
-    "coverage": "istanbul cover node_modules/jasmine-node/bin/jasmine-node -- spec/botSpec.js"
+    "coverage": "istanbul cover node_modules/jasmine-node/bin/jasmine-node -- spec/botSpec.js",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "author": "Anthony Garvan",
   "license": "CC0-1.0",
