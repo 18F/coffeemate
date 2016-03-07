@@ -1,0 +1,4 @@
+verbose: true
+instrumentation:
+   excludes: ['spec/*Spec.js']
+   include-all-sources: true

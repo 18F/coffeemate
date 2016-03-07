@@ -4,14 +4,18 @@
   "description": "the creamiest matchmaking slackbot",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "test": "node node_modules/jasmine-node/bin/jasmine-node spec/botSpec.js",
+    "start": "node app.js",
+    "coverage": "istanbul cover node_modules/jasmine-node/bin/jasmine-node -- spec/botSpec.js"
   },
   "author": "Anthony Garvan",
   "license": "CC0-1.0",
   "repository": "https://github.com/18F/coffeemate",
   "dependencies": {
     "@slack/client": "^2.0.6",
+    "coveralls": "^2.11.8",
+    "istanbul": "^0.4.2",
+    "jasmine-node": "^1.14.5",
     "request": "^2.69.0"
   }
 }
