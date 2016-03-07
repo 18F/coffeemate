@@ -1,4 +1,6 @@
 bot = require('../bot.js');
+app = require('../app.js');
+
 describe("coffeebot works", function() {
 	var request;
 	var rtm;
@@ -101,7 +103,6 @@ describe("coffeebot works", function() {
 						}
 		var coffeemate = bot.Bot(rtm, request, token)
 		coffeemate.run();
-		console.log(messages);
 		expect(messages[0].indexOf('in line') > 0).toBe(true);
 		expect(channels[0]).toBe('ch1');
 		expect(messages[1].indexOf('paired with yourself') >= 0).toBe(true);

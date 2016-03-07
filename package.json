@@ -4,9 +4,9 @@
   "description": "the creamiest matchmaking slackbot",
   "main": "app.js",
   "scripts": {
-    "test": "node node_modules/jasmine-node/bin/jasmine-node spec/botSpec.js",
+    "test": "(export testRun=true && node node_modules/jasmine-node/bin/jasmine-node spec/botSpec.js)",
     "start": "node app.js",
-    "coverage": "istanbul cover node_modules/jasmine-node/bin/jasmine-node -- spec/botSpec.js",
+    "coverage": "(export testRun=true && istanbul cover node_modules/jasmine-node/bin/jasmine-node -- spec/botSpec.js)",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "author": "Anthony Garvan",
