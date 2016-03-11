@@ -45,7 +45,7 @@ describe("coffeebot works", function() {
 						}
 		var coffeemate = bot.Bot(rtm, request, token)
 		coffeemate.run();
-		expect(messages[0].indexOf('0 folks') > 0).toBe(true);
+		expect(messages[0].indexOf('People in line for coffee') >= 0).toBe(true);
 		expect(channels[0]).toBe('ch1');
 		done();
 	});
@@ -57,7 +57,7 @@ describe("coffeebot works", function() {
 						}
 		var coffeemate = bot.Bot(rtm, request, token)
 		coffeemate.run();
-		expect(messages[0].indexOf("I'm just a simple") >= 0).toBe(true);
+		expect(messages[0].indexOf("I’ll match you up with a teammate") >= 0).toBe(true);
 		expect(channels[0]).toBe('ch1');
 		done();
 	});
@@ -69,7 +69,7 @@ describe("coffeebot works", function() {
 						}
 		var coffeemate = bot.Bot(rtm, request, token)
 		coffeemate.run();
-		expect(messages[0].indexOf("I'm just a simple") >= 0).toBe(true);
+		expect(messages[0].indexOf("I’ll match you up with a teammate") >= 0).toBe(true);
 		expect(channels[0]).toBe('D1234');
 		done();
 	});
@@ -105,9 +105,9 @@ describe("coffeebot works", function() {
 		coffeemate.run();
 		expect(messages[0].indexOf('in line') > 0).toBe(true);
 		expect(channels[0]).toBe('ch1');
-		expect(messages[1].indexOf('paired with yourself') >= 0).toBe(true);
+		expect(messages[1].indexOf('You’re no longer in line for coffee.') >= 0).toBe(true);
 		expect(channels[1]).toBe('ch1');
-		expect(messages[2].indexOf('0 folks') >= 0).toBe(true);
+		expect(messages[2].indexOf('People in line for coffee: 0') >= 0).toBe(true);
 		expect(channels[2]).toBe('ch1');
 		done();
 	});

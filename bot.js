@@ -23,22 +23,20 @@ function Bot(rtm, request, token) {
 		  		&& message.user !== coffeemateId) {
 		  	coffeeQueue.push(message.user);
 		  	if(coffeeQueue.length === 1) {
-		  		rtm.sendMessage("<@" + message.user + ">: You're in line for coffee!" +
-		  			" You'll be introduced to the next person who wants coffee.", message.channel);	
+		  		rtm.sendMessage("You’re in line for coffee! " +
+		  			"You’ll be introduced to the next person who wants to meet up.", message.channel);	
 		  	}
 
 		  	if(coffeeQueue.length === 2) {
 		  		if(coffeeQueue[0] !== coffeeQueue[1]) {
-			  		rtm.sendMessage("<@" + message.user + ">: " + 
-			  			"You've been matched up for coffee with <@" + coffeeQueue[0] + ">!" + 
-			  			" I'll set up a direct message channel for you two. :coffee: :fireworks:", 
+			  		rtm.sendMessage(
+			  			"You’ve been matched up for coffee with <@" + coffeeQueue[0] + ">! " +
+			  			"I’ll start a direct message for you two. :coffee: :tada:", 
 			  			message.channel);	
 			  		openGroupChat(coffeemateId, coffeeQueue, rtm);	  		
 		  		} else {
-		  			rtm.sendMessage("<@" + message.user + ">: " + 
-		  				"You just paired with yourself for coffee! You really don't need a " +
-		  				"bot to orchestrate this, you can just go get a cup. You are no longer " +
-		  				"in line to get coffee.", 
+		  			rtm.sendMessage("You’re no longer in line for coffee. " +
+		  				"But go ahead and pour yourself a cup—you deserve a break.", 
 			  			message.channel);
 		  		}
 
@@ -47,17 +45,16 @@ function Bot(rtm, request, token) {
 		  } else {
 		  	if(message.type === 'message' && 
 		  		(message.text.indexOf(coffeemateId) >= 0 || message.channel[0] == 'D')) {
-		  		rtm.sendMessage("I'm just a simple, creamy, matchmaking robot. To set up a virtual coffee, " + 
-		  				"direct message me and say `coffee me`, and I'll match you with another " +
-		  				"18fer who has done the same thing. You can also post `coffee me` in any channel " +
-		  				"I am invited to.", 
+		  		rtm.sendMessage("Sorry, I didn’t get that. To set up a virtual coffee (or :tea:!), " +
+		  			"direct message me and say `coffee me`, and I’ll match you up with a teammate. " +
+		  			"You can also post `coffee me` in any channel I’m invited to.", 
 			  			message.channel);
 		  	}
 		  }
 
 		  if(message.type === 'message' && message.text.indexOf('coffee queue') >= 0) {
-		  		rtm.sendMessage("<@" + message.user + ">: There are " + coffeeQueue.length + " folks in line for coffee."
-		  			, message.channel);	
+		  		rtm.sendMessage("People in line for coffee: " + coffeeQueue.length, 
+		  			message.channel);	
 		   };	
 	});}
 
