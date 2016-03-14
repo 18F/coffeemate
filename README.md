@@ -1,6 +1,6 @@
 # Coffeemate
 
-### The creamiest virtual coffee matchmaking slackbot
+### The virtual coffee matchmaking slackbot
 
 [![Build Status](https://travis-ci.org/18F/coffeemate.svg?branch=master)](https://travis-ci.org/18F/coffeemate)  [![Coverage Status](https://coveralls.io/repos/github/18F/coffeemate/badge.svg?branch=master)](https://coveralls.io/github/18F/coffeemate?branch=master)
 
