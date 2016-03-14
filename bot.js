@@ -1,5 +1,8 @@
 function Bot(rtm, request, token) {
 	var coffeeQueue = []
+	var startTime = new Date();
+	var coffeeSessions = 0;
+
 	function openGroupChat(coffeemateId, coffeeQueue) {
 		var users = coffeemateId + ',' + coffeeQueue[0] + ',' + coffeeQueue[1];
 		var options = {url: "https://slack.com/api/mpim.open",
@@ -33,7 +36,8 @@ function Bot(rtm, request, token) {
 			  			"You’ve been matched up for coffee with <@" + coffeeQueue[0] + ">! " +
 			  			"I’ll start a direct message for you two. :coffee: :tada:", 
 			  			message.channel);	
-			  		openGroupChat(coffeemateId, coffeeQueue, rtm);	  		
+			  		openGroupChat(coffeemateId, coffeeQueue, rtm);	
+			  		coffeeSessions++; 		
 		  		} else {
 		  			rtm.sendMessage("You’re no longer in line for coffee. " +
 		  				"But go ahead and pour yourself a cup—you deserve a break.", 
@@ -45,7 +49,7 @@ function Bot(rtm, request, token) {
 		  } else {
 		  	if(message.type === 'message' && 
 		  		(message.text.indexOf(coffeemateId) >= 0 || message.channel[0] == 'D')) {
-		  		rtm.sendMessage("Sorry, I didn’t get that. To set up a virtual coffee (or :tea:!), " +
+		  		rtm.sendMessage("Sorry, I didn’t get that. To set up a virtual coffee, " +
 		  			"direct message me and say `coffee me`, and I’ll match you up with a teammate. " +
 		  			"You can also post `coffee me` in any channel I’m invited to.", 
 			  			message.channel);
@@ -54,6 +58,11 @@ function Bot(rtm, request, token) {
 
 		  if(message.type === 'message' && message.text.indexOf('coffee queue') >= 0) {
 		  		rtm.sendMessage("People in line for coffee: " + coffeeQueue.length, 
+		  			message.channel);	
+		   };
+
+		   if(message.type === 'message' && message.text.indexOf('coffee sessions') >= 0) {
+		  		rtm.sendMessage(coffeeSessions + " sessions between " + startTime + ' and ' + new Date(), 
 		  			message.channel);	
 		   };	
 	});}
