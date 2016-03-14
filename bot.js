@@ -22,7 +22,7 @@ function Bot(rtm, request, token) {
 		var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 
 		rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-		  if(message.type === 'message' && message.text.toLowerCase().indexOf('coffee me') >= 0
+		  if(message.type === 'message' && message.text && message.text.toLowerCase().indexOf('coffee me') >= 0
 		  		&& message.user !== coffeemateId) {
 		  	coffeeQueue.push(message.user);
 		  	if(coffeeQueue.length === 1) {
@@ -47,24 +47,24 @@ function Bot(rtm, request, token) {
 		  		coffeeQueue = [];
 		  	}
 		  } else {
-		  	if(message.type === 'message' && 
+		  	if(message.type === 'message' && message.text.indexOf('coffee queue') >= 0) {
+		  		rtm.sendMessage("People in line for coffee: " + coffeeQueue.length, 
+		  			message.channel);	
+		   } else {
+		   	if(message.type === 'message' && message.text.indexOf('coffee sessions') >= 0) {
+		  		rtm.sendMessage(coffeeSessions + " sessions between " + startTime + ' and ' + new Date(), 
+		  			message.channel);	
+		   } else {
+		   	if(message.type === 'message' && 
 		  		(message.text.indexOf(coffeemateId) >= 0 || message.channel[0] == 'D')) {
 		  		rtm.sendMessage("Sorry, I didn’t get that. To set up a virtual coffee, " +
 		  			"direct message me and say `coffee me`, and I’ll match you up with a teammate. " +
 		  			"You can also post `coffee me` in any channel I’m invited to.", 
 			  			message.channel);
 		  	}
+		   }
+		   }
 		  }
-
-		  if(message.type === 'message' && message.text.indexOf('coffee queue') >= 0) {
-		  		rtm.sendMessage("People in line for coffee: " + coffeeQueue.length, 
-		  			message.channel);	
-		   };
-
-		   if(message.type === 'message' && message.text.indexOf('coffee sessions') >= 0) {
-		  		rtm.sendMessage(coffeeSessions + " sessions between " + startTime + ' and ' + new Date(), 
-		  			message.channel);	
-		   };	
 	});}
 
 	function run() {
