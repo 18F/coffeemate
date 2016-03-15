@@ -44,27 +44,33 @@ function Bot(rtm, request, token) {
 		  		&& message.user !== coffeemateId) {
 		  	queue.insert({user: message.user, available: true, timestamp: new Date()});
 		  	queue.find({available: true}).toArray(function(err, coffeeQueue) {
-			  	if(coffeeQueue.length === 1) {
+			  	if((coffeeQueue.length % 2) === 1) {
 			  		rtm.sendMessage("You’re in line for coffee! " +
 			  			"You’ll be introduced to the next person who wants to meet up.", message.channel);	
 			  	}
 
 			  	if(coffeeQueue.length >= 2) {
-			  		coffeeQueue[0].available = false;
-			  		coffeeQueue[1].available = false;
-			  		queue.update({_id: coffeeQueue[0]._id}, coffeeQueue[0])
-			  		queue.update({_id: coffeeQueue[1]._id}, coffeeQueue[1])
+			  		nPairs = Math.floor(coffee.length / 2);
 
-			  		if(coffeeQueue[0].user !== coffeeQueue[1].user) {
-				  		rtm.sendMessage(
-				  			"You’ve been matched up for coffee with <@" + coffeeQueue[0].user + ">! " +
-				  			"I’ll start a direct message for you two. :coffee: :tada:", 
-				  			message.channel);	
-				  		openGroupChat(coffeemateId, coffeeQueue, rtm);			
-			  		} else {
-			  			rtm.sendMessage("You’re no longer in line for coffee. " +
-			  				"But go ahead and pour yourself a cup—you deserve a break.", 
-				  			message.channel);
+			  		for(var pairIdx = 0; pairIdx < nPairs, pairIdx++) {
+			  			partner1 = pairIdx*2
+			  			partner2 = pairIdx*2 + 1
+				  		coffeeQueue[partner1].available = false;
+				  		coffeeQueue[partner2].available = false;
+				  		queue.update({_id: coffeeQueue[partner1]._id}, coffeeQueue[partner1]);
+				  		queue.update({_id: coffeeQueue[partner2]._id}, coffeeQueue[partner2]);
+
+				  		if(coffeeQueue[partner1].user !== coffeeQueue[partner2].user) {
+					  		rtm.sendMessage(
+					  			"You’ve been matched up for coffee with <@" + coffeeQueue[partner1].user + ">! " +
+					  			"I’ll start a direct message for you two. :coffee: :tada:", 
+					  			message.channel);	
+					  		openGroupChat(coffeemateId, coffeeQueue, rtm);			
+				  		} else {
+				  			rtm.sendMessage("You’re no longer in line for coffee. " +
+				  				"But go ahead and pour yourself a cup—you deserve a break.", 
+					  			message.channel);
+				  		}			  			
 			  		}
 			  	}	
 			  	});
