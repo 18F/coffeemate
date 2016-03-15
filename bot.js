@@ -50,9 +50,9 @@ function Bot(rtm, request, token) {
 			  	}
 
 			  	if(coffeeQueue.length >= 2) {
-			  		nPairs = Math.floor(coffee.length / 2);
+			  		nPairs = Math.floor(coffeeQueue.length / 2);
 
-			  		for(var pairIdx = 0; pairIdx < nPairs, pairIdx++) {
+			  		for(var pairIdx = 0; pairIdx < nPairs; pairIdx++) {
 			  			partner1 = pairIdx*2
 			  			partner2 = pairIdx*2 + 1
 				  		coffeeQueue[partner1].available = false;
