@@ -36,7 +36,7 @@ describe("coffeebot works", function() {
 		var coffeemate = bot.Bot(rtm, request, token)
 		coffeemate.emptyQueue(function() {
 			coffeemate.run() 
-			setTimeout(expectFn, 300);});
+			setTimeout(expectFn, 500);});
 	}
 	
 	it("responds to coffee me", function(done) {
@@ -115,7 +115,6 @@ describe("coffeebot works", function() {
 							}, 20)};							
 
 		runTest(function() {
-			console.log(messages);
 			expect(messages[0].indexOf('in line') > 0).toBe(true);
 			expect(channels[0]).toBe('ch1');
 			expect(messages[1].indexOf('You’re no longer in line for coffee.') >= 0).toBe(true);
