@@ -49,7 +49,7 @@ function Bot(rtm, request, token) {
 			  			"You’ll be introduced to the next person who wants to meet up.", message.channel);	
 			  	}
 
-			  	if(coffeeQueue.length === 2) {
+			  	if(coffeeQueue.length >= 2) {
 			  		coffeeQueue[0].available = false;
 			  		coffeeQueue[1].available = false;
 			  		queue.update({_id: coffeeQueue[0]._id}, coffeeQueue[0])
