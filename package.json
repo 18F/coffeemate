@@ -17,6 +17,7 @@
     "coveralls": "^2.11.8",
     "istanbul": "^0.4.2",
     "jasmine-node": "^1.14.5",
-    "request": "^2.69.0"
+    "request": "^2.69.0",
+    "mongodb": "^2.1.2"
   }
 }

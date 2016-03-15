@@ -26,28 +26,39 @@ describe("coffeebot works", function() {
 				   		messages.push(message);
 				   		channels.push(channel);
 				  	}}
-	}) 
+	});
+
+	afterEach(function() {
+		bot.db.close();
+	}); 
+
+	function runTest(expectFn) {
+		var coffeemate = bot.Bot(rtm, request, token)
+		coffeemate.emptyQueue(function() {
+			coffeemate.run() 
+			setTimeout(expectFn, 300);});
+	}
 	
 	it("responds to coffee me", function(done) {
 		rtm.on = function(event, callback) {
 						callback({type: "message", text: "coffee me", user: "userA", channel: "ch1"});
 						}
-		var coffeemate = bot.Bot(rtm, request, token)
-		coffeemate.run();
-		expect(messages[0].indexOf('in line') > 0).toBe(true);
-		expect(channels[0]).toBe('ch1');
-		done();
+		runTest(function() {
+					expect(messages[0].indexOf('in line') > 0).toBe(true);
+					expect(channels[0]).toBe('ch1');
+					done();
+				})
 	});
-
+	
 	it("responds to coffee queue", function(done) {
 		rtm.on = function(event, callback) {
 						callback({type: "message", text: "coffee queue", user: "userA", channel: "ch1"});
 						}
-		var coffeemate = bot.Bot(rtm, request, token)
-		coffeemate.run();
-		expect(messages[0].indexOf('People in line for coffee') >= 0).toBe(true);
-		expect(channels[0]).toBe('ch1');
-		done();
+		runTest(function() {
+			expect(messages[0].indexOf('People in line for coffee') >= 0).toBe(true);
+			expect(channels[0]).toBe('ch1');
+			done();			
+		})
 	});
 	
 	it("responds with help text when mentioned", function(done) {
@@ -55,25 +66,25 @@ describe("coffeebot works", function() {
 						callback({type: "message", 
 							text: "<@coffemateId1234>: blahblah", user: "userA", channel: "ch1"});
 						}
-		var coffeemate = bot.Bot(rtm, request, token)
-		coffeemate.run();
-		expect(messages[0].indexOf("I’ll match you up with a teammate") >= 0).toBe(true);
-		expect(channels[0]).toBe('ch1');
-		done();
+		runTest(function() {
+			expect(messages[0].indexOf("I’ll match you up with a teammate") >= 0).toBe(true);
+			expect(channels[0]).toBe('ch1');
+			done();
+		});
 	});
-
+	
 	it("responds with help text when direct messaged", function(done) {
 		rtm.on = function(event, callback) {
 						callback({type: "message", 
 							text: "blahblah", user: "userA", channel: "D1234"});
 						}
-		var coffeemate = bot.Bot(rtm, request, token)
-		coffeemate.run();
-		expect(messages[0].indexOf("I’ll match you up with a teammate") >= 0).toBe(true);
-		expect(channels[0]).toBe('D1234');
-		done();
+		runTest(function() {
+			expect(messages[0].indexOf("I’ll match you up with a teammate") >= 0).toBe(true);
+			expect(channels[0]).toBe('D1234');
+			done();			
+		});
 	});
-
+	
 	it("pairs up users for coffee, sending message and setting up group chat", function(done) {
 		rtm.on = function(event, callback) {
 						callback({type: "message", 
@@ -81,55 +92,37 @@ describe("coffeebot works", function() {
 						callback({type: "message", 
 							text: "please Coffee Me!", user: "userB", channel: "ch2"});
 						}
-		var coffeemate = bot.Bot(rtm, request, token)
-		coffeemate.run();
-		expect(messages[0].indexOf('in line') > 0).toBe(true);
-		expect(channels[0]).toBe('ch1');
-		expect(messages[1].indexOf("matched up for coffee") >= 0).toBe(true);
-		expect(channels[1]).toBe('ch2');
-		expect(messages[2].indexOf("You two have been paired up") >= 0).toBe(true);
-		expect(channels[2]).toBe('groupId1234');
-		done();
+		runTest(function() {
+			expect(messages[0].indexOf('in line') > 0).toBe(true);
+			expect(channels[0]).toBe('ch1');
+			expect(messages[1].indexOf("matched up for coffee") >= 0).toBe(true);
+			expect(channels[1]).toBe('ch2');
+			expect(messages[2].indexOf("You two have been paired up") >= 0).toBe(true);
+			expect(channels[2]).toBe('groupId1234');
+			done();			
+		});
 	});
-
+	
 	it("empties queue when self pairing", function(done) {
 		rtm.on = function(event, callback) {
 						callback({type: "message", 
 							text: "coffee me", user: "userA", channel: "ch1"});
 						callback({type: "message", 
 							text: "please Coffee Me!", user: "userA", channel: "ch1"});
-						callback({type: "message", 
-							text: "coffee queue", user: "userA", channel: "ch1"});
-						}
-		var coffeemate = bot.Bot(rtm, request, token)
-		coffeemate.run();
-		expect(messages[0].indexOf('in line') > 0).toBe(true);
-		expect(channels[0]).toBe('ch1');
-		expect(messages[1].indexOf('You’re no longer in line for coffee.') >= 0).toBe(true);
-		expect(channels[1]).toBe('ch1');
-		expect(messages[2].indexOf('People in line for coffee: 0') >= 0).toBe(true);
-		expect(channels[2]).toBe('ch1');
-		done();
-	});
+						setTimeout(function() {
+							callback({type: "message", 
+								text: "coffee queue", user: "userA", channel: "ch1"});
+							}, 20)};							
 
-	it("prints session count since start", function(done) {
-		rtm.on = function(event, callback) {
-						callback({type: "message", 
-							text: "coffee me", user: "userA", channel: "ch1"});
-						callback({type: "message", 
-							text: "please Coffee Me!", user: "userB", channel: "ch2"});
-						callback({type: "message", 
-							text: "coffee sessions", user: "userA", channel: "ch1"});
-						}
-		var coffeemate = bot.Bot(rtm, request, token)
-		coffeemate.run();
-		expect(messages[0].indexOf('in line') > 0).toBe(true);
-		expect(channels[0]).toBe('ch1');
-		expect(messages[1].indexOf("matched up for coffee") >= 0).toBe(true);
-		expect(channels[1]).toBe('ch2');
-		expect(messages[2].indexOf("You two have been paired up") >= 0).toBe(true);
-		expect(channels[2]).toBe('groupId1234');
-		expect(messages[3].indexOf("1 sessions") >= 0).toBe(true);
-		done();
-	});	
+		runTest(function() {
+			console.log(messages);
+			expect(messages[0].indexOf('in line') > 0).toBe(true);
+			expect(channels[0]).toBe('ch1');
+			expect(messages[1].indexOf('You’re no longer in line for coffee.') >= 0).toBe(true);
+			expect(channels[1]).toBe('ch1');
+			expect(messages[2].indexOf('People in line for coffee: 0') >= 0).toBe(true);
+			expect(channels[2]).toBe('ch1');
+			done();			
+		});
+	});
 });
