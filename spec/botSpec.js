@@ -89,8 +89,11 @@ describe("coffeebot works", function() {
 		rtm.on = function(event, callback) {
 						callback({type: "message", 
 							text: "coffee me", user: "userA", channel: "ch1"});
-						callback({type: "message", 
-							text: "please Coffee Me!", user: "userB", channel: "ch2"});
+						setTimeout(function() {
+							callback({type: "message", 
+								text: "please Coffee Me!", user: "userB", channel: "ch2"});							
+						}, 100);
+
 						}
 		runTest(function() {
 			expect(messages[0].indexOf('in line') > 0).toBe(true);

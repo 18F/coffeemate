@@ -15,9 +15,10 @@ function Bot(rtm, request, token) {
 	function emptyQueue(callback) {
 		MongoClient.connect(url, function(err, db) {
 			queue = db.collection("queue");
-			queue.remove({});	
-			db.close();
-			callback();
+			queue.remove({}, function(err, result) {
+				db.close();
+				callback();				
+			});	
 		});
 	}
 
@@ -42,46 +43,48 @@ function Bot(rtm, request, token) {
 		rtm.on(RTM_EVENTS.MESSAGE, function (message) {
 		  if(message.type === 'message' && message.text && message.text.toLowerCase().indexOf('coffee me') >= 0
 		  		&& message.user !== coffeemateId) {
-		  	queue.insert({user: message.user, available: true, timestamp: new Date()});
-		  	queue.find({available: true}).toArray(function(err, coffeeQueue) {
-			  	if((coffeeQueue.length % 2) === 1) {
-			  		rtm.sendMessage("You’re in line for coffee! " +
-			  			"You’ll be introduced to the next person who wants to meet up.", message.channel);	
-			  	}
+		  	queue.insert({user: message.user, available: true, timestamp: new Date()}, function(err, result) {
+			  	queue.find({available: true}).toArray(function(err, coffeeQueue) {
+				  	if((coffeeQueue.length % 2) === 1) {
+				  		rtm.sendMessage("You’re in line for coffee! " +
+				  			"You’ll be introduced to the next person who wants to meet up.", message.channel);	
+				  	}
 
-			  	if(coffeeQueue.length >= 2) {
-			  		nPairs = Math.floor(coffeeQueue.length / 2);
+				  	if(coffeeQueue.length >= 2) {
+				  		nPairs = Math.floor(coffeeQueue.length / 2);
 
-			  		for(var pairIdx = 0; pairIdx < nPairs; pairIdx++) {
-			  			partner1 = pairIdx*2
-			  			partner2 = pairIdx*2 + 1
-				  		coffeeQueue[partner1].available = false;
-				  		coffeeQueue[partner2].available = false;
-				  		queue.update({_id: coffeeQueue[partner1]._id}, coffeeQueue[partner1]);
-				  		queue.update({_id: coffeeQueue[partner2]._id}, coffeeQueue[partner2]);
+				  		for(var pairIdx = 0; pairIdx < nPairs; pairIdx++) {
+				  			partner1 = pairIdx*2
+				  			partner2 = pairIdx*2 + 1
+					  		coffeeQueue[partner1].available = false;
+					  		coffeeQueue[partner2].available = false;
+					  		queue.update({_id: coffeeQueue[partner1]._id}, coffeeQueue[partner1]);
+					  		queue.update({_id: coffeeQueue[partner2]._id}, coffeeQueue[partner2]);
 
-				  		if(coffeeQueue[partner1].user !== coffeeQueue[partner2].user) {
-					  		rtm.sendMessage(
-					  			"You’ve been matched up for coffee with <@" + coffeeQueue[partner1].user + ">! " +
-					  			"I’ll start a direct message for you two. :coffee: :tada:", 
-					  			message.channel);	
-					  		openGroupChat(coffeemateId, coffeeQueue, rtm);			
-				  		} else {
-				  			rtm.sendMessage("You’re no longer in line for coffee. " +
-				  				"But go ahead and pour yourself a cup—you deserve a break.", 
-					  			message.channel);
-				  		}			  			
-			  		}
-			  	}	
-			  	});
+					  		if(coffeeQueue[partner1].user !== coffeeQueue[partner2].user) {
+						  		rtm.sendMessage(
+						  			"You’ve been matched up for coffee with <@" + coffeeQueue[partner1].user + ">! " +
+						  			"I’ll start a direct message for you two. :coffee: :tada:", 
+						  			message.channel);	
+						  		openGroupChat(coffeemateId, coffeeQueue, rtm);			
+					  		} else {
+					  			rtm.sendMessage("You’re no longer in line for coffee. " +
+					  				"But go ahead and pour yourself a cup—you deserve a break.", 
+						  			message.channel);
+					  		}			  			
+				  		}
+				  	}	
+				  	});		  		
+		  	});
+
 		  } else {
-		  	if(message.type === 'message' && message.text.indexOf('coffee queue') >= 0) {
+		  	if(message.type === 'message' && message.text && message.text.indexOf('coffee queue') >= 0) {
 		  		queue.find({available: true}).toArray(function(err, coffeeQueue) {
 		  		rtm.sendMessage("People in line for coffee: " + coffeeQueue.length, 
 		  			message.channel);	
 		  	});
 		   } else {
-		   	if(message.type === 'message' && 
+		   	if(message.type === 'message' && message.text &&
 		  		(message.text.indexOf(coffeemateId) >= 0 || message.channel[0] == 'D')) {
 		  		rtm.sendMessage("Sorry, I didn’t get that. To set up a virtual coffee, " +
 		  			"direct message me and say `coffee me`, and I’ll match you up with a teammate. " +
