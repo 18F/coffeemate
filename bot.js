@@ -7,7 +7,7 @@ function Bot(rtm, request, token) {
 	var url;
 	if(process.env.VCAP_SERVICES) {
 		vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-		url = vcapServices["mongodb26-swarm"][0].credentials.uri	
+		url = vcapServices["mongodb26-swarm"][0].credentials.uri
 	} else {
 		url = 'mongodb://localhost:27017/coffeemate';
 	}
@@ -17,8 +17,8 @@ function Bot(rtm, request, token) {
 			queue = db.collection("queue");
 			queue.remove({}, function(err, result) {
 				db.close();
-				callback();				
-			});	
+				callback();
+			});
 		});
 	}
 
@@ -47,7 +47,7 @@ function Bot(rtm, request, token) {
 			  	queue.find({available: true}).toArray(function(err, coffeeQueue) {
 				  	if((coffeeQueue.length % 2) === 1) {
 				  		rtm.sendMessage("You’re in line for coffee! " +
-				  			"You’ll be introduced to the next person who wants to meet up.", message.channel);	
+				  			"You’ll be introduced to the next person who wants to meet up.", message.channel);
 				  	}
 
 				  	if(coffeeQueue.length >= 2) {
@@ -64,37 +64,40 @@ function Bot(rtm, request, token) {
 					  		if(coffeeQueue[partner1].user !== coffeeQueue[partner2].user) {
 						  		rtm.sendMessage(
 						  			"You’ve been matched up for coffee with <@" + coffeeQueue[partner1].user + ">! " +
-						  			"I’ll start a direct message for you two. :coffee: :tada:", 
-						  			message.channel);	
-						  		openGroupChat(coffeemateId, coffeeQueue, rtm);			
+						  			"I’ll start a direct message for you two. :coffee: :tada:",
+						  			message.channel);
+						  		openGroupChat(coffeemateId, coffeeQueue, rtm);
 					  		} else {
 					  			rtm.sendMessage("You’re no longer in line for coffee. " +
-					  				"But go ahead and pour yourself a cup—you deserve a break.", 
+					  				"But go ahead and pour yourself a cup—you deserve a break.",
 						  			message.channel);
-					  		}			  			
+					  		}
 				  		}
-				  	}	
-				  	});		  		
+				  	}
+				  	});
 		  	});
 
 		  } else {
 		  	if(message.type === 'message' && message.text && message.text.indexOf('coffee queue') >= 0) {
 		  		queue.find({available: true}).toArray(function(err, coffeeQueue) {
-		  		rtm.sendMessage("People in line for coffee: " + coffeeQueue.length, 
-		  			message.channel);	
+		  		rtm.sendMessage("People in line for coffee: " + coffeeQueue.length,
+		  			message.channel);
 		  	});
 		   } else {
 		   	if(message.type === 'message' && message.text &&
 		  		(message.text.indexOf(coffeemateId) >= 0 || message.channel[0] == 'D')) {
 		  		rtm.sendMessage("Sorry, I didn’t get that. To set up a virtual coffee, " +
 		  			"direct message me and say `coffee me`, and I’ll match you up with a teammate. " +
-		  			"You can also post `coffee me` in any channel I’m invited to.", 
+		  			"You can also post `coffee me` in any channel I’m invited to.",
 			  			message.channel);
 		  	}
 		   }}});}
 
 	function run() {
 		MongoClient.connect(url, function(err, db) {
+			if(err) {
+				throw err;
+			}
 			module.exports.db = db;
 			queue = db.collection("queue");
 			queue.ensureIndex('available');
