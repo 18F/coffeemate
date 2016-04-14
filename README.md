@@ -27,6 +27,14 @@ And it will respond with the number of people in line, which should always be 0 
 
 If you ran `coffee me` by mistake and weren't paired with anyone, you can run `coffee me` again and you will be paired with yourself, which empties the queue and leaves you with two cups of coffee all for yourself!
 
+## Installation
+To get setup, clone the repo and run:
+```bash
+$ export SLACK_API_TOKEN=[your api token]
+$ npm install
+$ npm start
+```
+
 ## Public domain
 
 This project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):
