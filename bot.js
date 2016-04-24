@@ -8,6 +8,8 @@ function Bot(rtm, request, token) {
 	if(process.env.VCAP_SERVICES) {
 		vcapServices = JSON.parse(process.env.VCAP_SERVICES);
 		url = vcapServices["mongodb26-swarm"][0].credentials.uri
+	} else if(process.env.MONGODB_URL) {
+		url = process.env.MONGODB_URL
 	} else {
 		url = 'mongodb://localhost:27017/coffeemate';
 	}
