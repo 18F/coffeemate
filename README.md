@@ -1,6 +1,6 @@
 # Coffeemate
 
-### The virtual coffee matchmaking slackbot
+## The virtual coffee matchmaking slackbot
 
 [![Build Status](https://travis-ci.org/18F/coffeemate.svg?branch=master)](https://travis-ci.org/18F/coffeemate)  [![Coverage Status](https://coveralls.io/repos/github/18F/coffeemate/badge.svg?branch=master)](https://coveralls.io/github/18F/coffeemate?branch=master)
 
@@ -26,3 +26,19 @@ If you are wondering if anyone is in line right now, you can also write
 And it will respond with the number of people in line, which should always be 0 or 1, since once a pair is made the queue is emptied.
 
 If you ran `coffee me` by mistake and weren't paired with anyone, you can run `coffee me` again and you will be paired with yourself, which empties the queue and leaves you with two cups of coffee all for yourself!
+
+## Installation
+To get setup, clone the repo and run:
+```bash
+$ export SLACK_API_TOKEN=[your api token]
+$ npm install
+$ npm start
+```
+
+## Public domain
+
+This project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):
+
+> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+>
+> All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.

@@ -95,9 +95,9 @@ function Bot(rtm, request, token) {
 
 	function run() {
 		MongoClient.connect(url, function(err, db) {
-      if(err) {
-          console.log(err);
-      }
+			if(err) {
+				throw err;
+			}
 			module.exports.db = db;
 			queue = db.collection("queue");
 			queue.ensureIndex('available');
